@@ -1,71 +1,63 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { Card, CardImg, CardText, CardBody, CardTitle, ListGroup, ListGroupItem } from 'reactstrap';
 
-class DishDetail extends Component {
-    renderDish(dish) {
-        if (dish !== undefined) {
-            return (
-                <Card>
-                    <CardImg top src={dish.image} alt={dish.name} />
-                    <CardBody>
-                        <CardTitle>{dish.name}</CardTitle>
-                        <CardText>{dish.description}</CardText>
-                    </CardBody>
-                </Card>
-            );
-        }
-        else {
-            return (
-                <div></div>
-            );
-        }
-    }
+// function renderDish({dish}) {
+const RenderDish = ({dish}) => {
+    return (
+        <Card>
+            <CardImg top src={dish.image} alt={dish.name} />
+            <CardBody>
+                <CardTitle>{dish.name}</CardTitle>
+                <CardText>{dish.description}</CardText>
+            </CardBody>
+        </Card>
+    );
+}
 
-    renderComments(dish) {
-        if (dish !== undefined) {
-            const options = {  month: 'short', day: 'numeric', year: 'numeric' };
-            const comments = dish.comments.map((dish) => {
-                return (
-                    <ListGroup>
-                        <ListGroupItem className="border-0"> {dish.comment}</ListGroupItem>
-                        <ListGroupItem className="border-0"> 
-                            {"-- "} 
-                            {dish.author}
-                            {" , "} 
-                            {new Date(dish.date).toLocaleDateString('en-US', options)}
-                        </ListGroupItem>
-                    </ListGroup>
-                    
-                );
-            });
+const RenderComments = ({comments}) => {
+    const options = {  month: 'short', day: 'numeric', year: 'numeric' };
+    const value = comments.map((comment) => {
+        return (
+            <ListGroup>
+                <ListGroupItem className="border-0"> {comment.comment}</ListGroupItem>
+                <ListGroupItem className="border-0"> 
+                    {"-- "} 
+                    {comment.author}
+                    {" , "} 
+                    {new Date(comment.date).toLocaleDateString('en-US', options)}
+                </ListGroupItem>
+            </ListGroup>
+        );
+    });
 
-            return (
-                <div className="col-12 col-md-5 m-1">
-                    <h4> Comments </h4>
-                    {comments}
-                </div>
-            )
-        }
-        else {
-            return (
-                <div></div>
-            );
-        }
-    }
+    return (
+        <div className="col-12 col-md-5 m-1">
+            <h4> Comments </h4>
+            {value}
+        </div>
+    )
+}
 
-    render() {
+const DishDetail = (props) => {
+    if (props.dish !== undefined) {
         return (
             <div className="container">
                 <div className="row">
                     <div className="col-12 col-md-5 m-1">
-                        {this.renderDish(this.props.dish)}
+                        <RenderDish dish={props.dish}/>
                     </div>
-                    {this.renderComments(this.props.dish)}
+                    <RenderComments comments={props.dish.comments}/>
                 </div>
             </div>
             
         );
     }
+    else {
+        return (
+            <div></div>
+        );
+    }
+    
 }
 
 export default DishDetail;
