@@ -3,7 +3,7 @@ import { Card, CardImg, CardText, CardBody, CardTitle, ListGroup, ListGroupItem 
 
 class DishDetail extends Component {
     renderDish(dish) {
-        if (dish !== null) {
+        if (dish !== undefined) {
             return (
                 <Card>
                     <CardImg top src={dish.image} alt={dish.name} />
@@ -22,7 +22,7 @@ class DishDetail extends Component {
     }
 
     renderComments(dish) {
-        if (dish !== null) {
+        if (dish !== undefined) {
             const options = {  month: 'short', day: 'numeric', year: 'numeric' };
             const comments = dish.comments.map((dish) => {
                 return (
@@ -55,12 +55,15 @@ class DishDetail extends Component {
 
     render() {
         return (
-            <div className="row">
-                <div className="col-12 col-md-5 m-1">
-                    {this.renderDish(this.props.selected)}
+            <div className="container">
+                <div className="row">
+                    <div className="col-12 col-md-5 m-1">
+                        {this.renderDish(this.props.dish)}
+                    </div>
+                    {this.renderComments(this.props.dish)}
                 </div>
-                {this.renderComments(this.props.selected)}
             </div>
+            
         );
     }
 }
