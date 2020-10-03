@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 const maxLength = (len) => (val) => !(val) || (val.length <= len);
 const minLength = (len) => (val) => val && (val.length >= len);
 
-class CommentFrom extends Component {
+class CommentForm extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -22,8 +22,8 @@ class CommentFrom extends Component {
     }
 
     handleSubmit(values) {
-        console.log('Current State is: ' + JSON.stringify(values));
-        alert('Current State is: ' + JSON.stringify(values));
+        this.toggleModal();
+        this.props.addComment(this.props.dishId, values.rating, values.author, values.comment);
     }
 
     render() {
@@ -110,7 +110,7 @@ const RenderDish = ({dish}) => {
     );
 }
 
-const RenderComments = ({comments}) => {
+const RenderComments = ({comments, addComment, dishId}) => {
     const options = {  month: 'short', day: 'numeric', year: 'numeric' };
     const value = comments.map((comment) => {
         return (
@@ -130,7 +130,7 @@ const RenderComments = ({comments}) => {
         <div className="col-12 col-md-5 m-1">
             <h4> Comments </h4>
             {value}
-            <CommentFrom />
+            <CommentForm dishId={dishId} addComment={addComment} />
         </div>
     )
 }
@@ -153,7 +153,7 @@ const DishDetail = (props) => {
                     <div className="col-12 col-md-5 m-1">
                         <RenderDish dish={props.dish}/>
                     </div>
-                    <RenderComments comments={props.comments} />
+                    <RenderComments comments={props.comments} addComment={props.addComment} dishId={props.dish.id} />
                 </div>
             </div>
             
