@@ -3,6 +3,7 @@ import { Card, CardImg, CardText, CardBody, CardTitle, Row, Col, Label, ListGrou
 import { Control, LocalForm, Errors } from 'react-redux-form';
 import { Link } from 'react-router-dom';
 import { Loading } from './LoadingComponent';
+import { baseUrl } from '../shared/baseUrl';
 
 const maxLength = (len) => (val) => !(val) || (val.length <= len);
 const minLength = (len) => (val) => val && (val.length >= len);
@@ -102,7 +103,7 @@ class CommentForm extends Component {
 const RenderDish = ({dish}) => {
     return (
         <Card>
-            <CardImg top src={dish.image} alt={dish.name} />
+            <CardImg top src={baseUrl + dish.image} alt={dish.name} />
             <CardBody>
                 <CardTitle>{dish.name}</CardTitle>
                 <CardText>{dish.description}</CardText>
@@ -137,7 +138,7 @@ const RenderComments = ({comments, addComment, dishId}) => {
 }
 
 const DishDetail = (props) => {
-    if (props.dishes.isLoading) {
+    if (props.isLoading) {
         return(
             <div className="container">
                 <div className="row">            
@@ -146,7 +147,7 @@ const DishDetail = (props) => {
             </div>
         );
     }
-    else if (props.dishes.errMess) {
+    else if (props.errMess) {
         return(
             <div className="container">
                 <div className="row"> 
