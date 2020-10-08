@@ -1,22 +1,55 @@
 import React from 'react';
 import { Breadcrumb, BreadcrumbItem, Card, CardBody, CardHeader, Media } from 'reactstrap';
 import { Link } from 'react-router-dom';
+import { Loading } from './LoadingComponent';
+import { baseUrl } from '../shared/baseUrl';
+import { FadeTransform, Fade, Stagger } from 'react-animation-components';
 
 function RenderLeader({leaders}) {
-    const leaders_render = leaders.map((leader) => {
+    console.log(leaders)
+    if (leaders.isLoading) {
         return (
-            <Media tag="li" key={leader.id}>
-                <Media object src={leader.image} alt={leader.name} />
-                <Media body className="ml-5">
-                    <Media heading>{leader.name}</Media>
-                    <p>{leader.designation}</p>
-                    <p>{leader.description}</p>
-                </Media>
-            </Media>
+            <div className="container">
+                <div className="row">            
+                    <Loading />
+                </div>
+            </div>
+        );
+    }
+    else if (leaders.errMess) {
+        return (
+            <div className="container">
+                <div className="row"> 
+                    <div className="col-12">
+                        <h4>{leaders.errMess}</h4>
+                    </div>
+                </div>
+            </div>
         )
-    });
-
-    return leaders_render;
+    }
+    else {
+        const leaders_render = leaders.leaders.map((leader) => {
+            return (
+                <Fade in>
+                    <Media tag="li" key={leader.id}>
+                    <Media object src={baseUrl + leader.image} alt={leader.name} />
+                    <Media body className="ml-5">
+                        <Media heading>{leader.name}</Media>
+                        <p>{leader.designation}</p>
+                        <p>{leader.description}</p>
+                    </Media>
+                    </Media>
+                </Fade>
+                
+            )
+        });
+    
+        return (
+            <Stagger in>
+            { leaders_render }
+            </Stagger>
+        );
+    }
 }
 
 function About(props) {
